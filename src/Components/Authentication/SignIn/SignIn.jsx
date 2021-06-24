@@ -7,8 +7,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import {
+    // useSelector,
+    useDispatch
+} from 'react-redux';
 
 import '../Authentication.css'
+import {
+    userSignIn,
+    userSignUp
+} from '../../../Store/ActionCreators'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn(props) {
 
+    const dispatch = useDispatch();
 
     const validate = (pattern, field) => {
     let regex = new RegExp(pattern);
@@ -63,7 +72,8 @@ function SignIn(props) {
         password: password
       };
 
-        console.log(data)
+        // console.log(data)
+        dispatch(userSignIn(data))
     //   userLogin(data);
 
       setEmail('');

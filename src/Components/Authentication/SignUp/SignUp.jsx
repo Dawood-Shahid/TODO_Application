@@ -7,8 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import {
+    // useSelector,
+    useDispatch
+} from 'react-redux';
 
 import '../Authentication.css'
+import { userSignUp } from '../../../Store/ActionCreators';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 function SignUp(props) {
+
+  const dispatch = useDispatch();
 
    const [firstNameValid, setFirstNameValid] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -89,7 +96,8 @@ function SignUp(props) {
           password,
         }; 
 
-        console.log(userData)
+        // console.log(userData)
+        dispatch(userSignUp(userData))
         // registerUser(userData);
   
         setFirstName('');
