@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -30,8 +30,49 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SignIn() {
+function SignIn(props) {
+
+
+    const validate = (pattern, field) => {
+    let regex = new RegExp(pattern);
+    if (regex.test(field)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+    const [emailValid, setEmailValid] = useState(false);
+    const [email, setEmail] = useState('');
+    const handleEmail = e => {
+        setEmail(e.target.value);
+        setEmailValid(validate(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/g, e.target.value));
+    };
+
+    const [password, setPassword] = useState('');
+    const handlePassword = e => setPassword(e.target.value);
+
     const classes = useStyles();
+
+    const login = (e) => {
+    e.preventDefault();
+
+    if (emailValid && password.length > 5) {
+      let data = {
+        email: email,
+        password: password
+      };
+
+        console.log(data)
+    //   userLogin(data);
+
+      setEmail('');
+      setPassword('');
+    }
+    // else {
+    //   setMessage('Please enter all fields', 'error');
+    // }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -40,7 +81,7 @@ function SignIn() {
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={(e) => login(e)} method='post'>
           <TextField
             variant="outlined"
             margin="normal"
@@ -51,6 +92,10 @@ function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={handleEmail}
+            error={email !== '' & !emailValid}
+            helperText={email !== '' & !emailValid ? 'email pattern : username@domain.com' : ''}
           />
           <TextField
             variant="outlined"
@@ -62,7 +107,12 @@ function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-                  />
+            value={password}
+            onChange={handlePassword}
+            error={password.length > 0 && password.length < 6}
+            helperText={password.length > 0 && password.length < 6 ? 'password must be atleast 6 characters long' : ''}
+            autoComplete="current-password"
+          />
           <Button
             type="submit"
             fullWidth

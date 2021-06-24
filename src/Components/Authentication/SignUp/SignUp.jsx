@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -31,7 +31,81 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function SignUp() {
+function SignUp(props) {
+
+   const [firstNameValid, setFirstNameValid] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const handleFirstName = e => {
+    setFirstName(e.target.value);
+    setFirstNameValid(validate(/[a-zA-Z]{2}/g, firstName));
+  };
+
+  const [lastNameValid, setLastNameValid] = useState(false);
+  const [lastName, setLastName] = useState('');
+  const handleLastName = e => {
+    setLastName(e.target.value);
+    setLastNameValid(validate(/[a-zA-Z]{2}/g, lastName));
+  };
+
+  const [emailValid, setEmailValid] = useState(false);
+  const [email, setEmail] = useState('');
+  const handleEmail = e => {
+    setEmail(e.target.value);
+    setEmailValid(validate(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/g, email));
+  };
+
+  const [password, setPassword] = useState('');
+  const handlePassword = e => setPassword(e.target.value);
+
+  const [passwordValidate, setPasswordValidate] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const handleConfirmPassword = e => {
+    setConfirmPassword(e.target.value);
+    setPasswordValidate(!(e.target.value.length == password.length && checkPassword(password, e.target.value)));
+  };
+
+   const checkPassword = (password, confirmPassword) => {
+    return password === confirmPassword ? true : false;
+  };
+
+  const validate = (pattern, field) => {
+    let regex = new RegExp(pattern);
+    if (regex.test(field)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const signUp = (e) => {
+    e.preventDefault();
+
+    if (firstName && lastName && email && password) {
+      if (firstNameValid && lastNameValid && emailValid && !passwordValidate) {
+        let userData = {
+          firstName,
+          lastName,
+          email,
+          password,
+        }; 
+
+        console.log(userData)
+        // registerUser(userData);
+  
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        
+
+      }
+    }
+    // else {
+    //   setMessage('Please enter all fields', 'error');
+    // }
+  };
+
   const classes = useStyles();
 
   return (
@@ -41,7 +115,7 @@ function SignUp() {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={e=>signUp(e)} method='post'>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -53,6 +127,10 @@ function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={firstName}
+                onChange={handleFirstName}
+                error={firstName !== '' & !firstNameValid}
+                helperText={firstName !== '' & !firstNameValid ? 'must be atleast 3 chars long' : ''}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -64,6 +142,10 @@ function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lastName}
+                onChange={handleLastName}
+                error={lastName !== '' & !lastNameValid}
+                helperText={lastName !== '' & !lastNameValid ? 'must be atleast 3 chars long' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -74,7 +156,11 @@ function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                autoComplete="off"
+                value={email}
+                onChange={handleEmail}
+                error={email !== '' & !emailValid}
+                helperText={email !== '' & !emailValid ? 'email pattern : username@domain.com' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -86,7 +172,27 @@ function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                value={password}
+                onChange={handlePassword}
+                autoComplete="off"
+                error={password.length > 0 && password.length < 6}
+                helperText={password.length > 0 && password.length < 6 ? 'password must be atleast 6 characters long' : ''}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={handleConfirmPassword}
+                error={passwordValidate}
+                helperText={passwordValidate ? 'password must be same' : ''}
+                autoComplete="off"
               />
             </Grid>
             <Grid item xs={12}>
