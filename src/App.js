@@ -1,10 +1,15 @@
 import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import Auth from './Components/Authentication/Authentication';
 
 function App() {
   return (
-    <div className="App">
-      <h1>TODO Application.</h1>
-    </div>
+    <Router>
+      <div className="App">
+        <Auth />
+      </div>
+    </Router>
   );
 }
 
