@@ -3,12 +3,10 @@
 import {
     USER_SIGN_IN,
     USER_SIGN_UP,
-} from './ActionType';
+} from './AuthenticationType';
 
-let initialState = {
-    user: {
+const initialState = {
 
-    }
 };
 
 export default (state = initialState, action) => {

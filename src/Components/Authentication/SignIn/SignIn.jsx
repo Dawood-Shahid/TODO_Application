@@ -16,7 +16,7 @@ import '../Authentication.css'
 import {
     userSignIn,
     userSignUp
-} from '../../../Store/ActionCreators'
+} from '../../../redux/Authentication/AuthenticationActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -134,9 +134,15 @@ function SignIn(props) {
         </Button>
         <Grid  container justify="flex-end">
             <Grid item>
-                <Link className='link' to='/sign-up' variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to='/sign-up' className = 'link'>
+            <Typography
+              color='primary'
+              gutterBottom={ true }
+              variant='subtitle2'
+            >
+              Don't have an account? Sign Up
+            </Typography>
+          </Link>
             </Grid>
           </Grid>
         </form>

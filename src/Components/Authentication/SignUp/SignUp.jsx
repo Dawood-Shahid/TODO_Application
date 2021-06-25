@@ -8,12 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import {
-    // useSelector,
+    useSelector,
     useDispatch
 } from 'react-redux';
 
 import '../Authentication.css'
-import { userSignUp } from '../../../Store/ActionCreators';
+import { userSignUp } from '../../../redux/Authentication/AuthenticationActions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp(props) {
 
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch();
 
    const [firstNameValid, setFirstNameValid] = useState(false);
@@ -96,9 +97,7 @@ function SignUp(props) {
           password,
         }; 
 
-        // console.log(userData)
         dispatch(userSignUp(userData))
-        // registerUser(userData);
   
         setFirstName('');
         setLastName('');
@@ -106,7 +105,6 @@ function SignUp(props) {
         setPassword('');
         setConfirmPassword('');
         
-
       }
     }
     // else {
@@ -217,9 +215,15 @@ function SignUp(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link className='link' to='/' variant="body2">
-                Already have an account? Sign in
-              </Link>
+            <Link to='/' className = 'link'>
+            <Typography
+              color='primary'
+              gutterBottom={ true }
+              variant='subtitle2'
+            >
+              Already have an account? Sign in
+            </Typography>
+          </Link>
             </Grid>
           </Grid>
         </form>
