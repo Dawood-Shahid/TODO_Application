@@ -6,56 +6,79 @@ import {
 } from './AuthenticationType';
 import config from '../../DBConfig/Config';
 
-const setUserData = (user) => {
-    config.auth().createUserWithEmailAndPassword(user.email, user.password)
-        .then((res) => {
-            res.user.sendEmailVerification()
-                .then(function () {
-                    alert('A verification email has been sent to your account.');
-                    let userID = res.user.uid;
-                    let user = {
-                        key: userID,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: res.user.email,
-                    };
-                    config.database().ref(`/TODO-App/registered-users/${user.key}`).set(user)
+const registeredUser = (data) => {
+    return (dispatch) => {
+        config.auth().createUserWithEmailAndPassword(data.email, data.password)
+            .then((res) => {
+                // // uncommt for emil verification 
+                // res.user.sendEmailVerification()
+                    // .then(function () {
+                        let userID = res.user.uid;
+                        let user = {
+                            key: userID,
+                            firstName: data.firstName,
+                            lastName: data.lastName,
+                            email: res.user.email,
+                        };
+                        alert('A verification email has been sent to your account.');
+                        config.database().ref(`/TODO-App/registered-users/${user.key}`).set(user)
                         .then(() => {
-                        })
-                        .catch(err =>
-                            console.log(err)
-                        );
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+                                dispatch(userSignUp(user))
+                            })
+                            .catch(err =>
+                                console.log(err)
+                            );
+                    // })
+                    // .catch(function (error) {
+                    //     console.log(error);
+                    // });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    
 };
 
 const getCurrentUser = () => {
-    const user =  config.auth().currentUser;
-
-    return user;
+    let userData;
+    
 };
 
-export const userSignIn = (payload) => {
+const loginUser = (formData) => {
+    // console.log(formData);
+    return dispatch => {
+        config.auth().signInWithEmailAndPassword(formData.email, formData.password)
+            .then(res => {
+                if (res.user.emailVerified) {
+                // getUserData();
+                } else {
+                    alert('email not verified')
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};
+
+const userSignIn = (payload) => {
+    // userLogin(payload)
 
     return {
         type: USER_SIGN_IN,
-        payload
     };
 };
 
-export const userSignUp = (payload) => {
-
-    const user = setUserData(payload);
-    console.log(user)
-
+const userSignUp = (payload) => {
+    // setUserData(payload);
     return {
         type: USER_SIGN_UP,
         payload
     };
 };
+
+export {
+    registeredUser,
+    loginUser,
+}

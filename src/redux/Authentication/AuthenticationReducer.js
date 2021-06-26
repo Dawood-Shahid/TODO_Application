@@ -6,7 +6,7 @@ import {
 } from './AuthenticationType';
 
 const initialState = {
-
+    isLogedIn: false
 };
 
 export default (state = initialState, action) => {
@@ -14,13 +14,18 @@ export default (state = initialState, action) => {
         case USER_SIGN_IN:
             return {
                 ...state,
+                isLogedIn: true
             };
-
-        case USER_SIGN_UP:
-            // console.log(action.payload);
-            return {
-                ...state,
-                user: action.payload
+            
+            case USER_SIGN_UP:
+                return {
+                    ...state,
+                    user: {
+                        firstName: action.payload.firstName,
+                        lastName: action.payload.lastName,
+                        email: action.payload.email
+                    },
+                    isLogedIn: false
             };
 
         default:

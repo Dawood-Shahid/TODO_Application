@@ -8,14 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import {
-    // useSelector,
     useDispatch
 } from 'react-redux';
 
 import '../Authentication.css'
 import {
-    userSignIn,
-    userSignUp
+  loginUser
 } from '../../../redux/Authentication/AuthenticationActions'
 
 const useStyles = makeStyles((theme) => ({
@@ -43,13 +41,13 @@ function SignIn(props) {
     const dispatch = useDispatch();
 
     const validate = (pattern, field) => {
-    let regex = new RegExp(pattern);
-    if (regex.test(field)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+      let regex = new RegExp(pattern);
+      if (regex.test(field)) {
+        return true;
+      } else {
+        return false;
+      }
+    };
 
     const [emailValid, setEmailValid] = useState(false);
     const [email, setEmail] = useState('');
@@ -73,7 +71,7 @@ function SignIn(props) {
       };
 
         // console.log(data)
-        dispatch(userSignIn(data))
+      dispatch(loginUser(data));
     //   userLogin(data);
 
       setEmail('');
@@ -101,11 +99,11 @@ function SignIn(props) {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
             value={email}
             onChange={handleEmail}
             error={email !== '' & !emailValid}
             helperText={email !== '' & !emailValid ? 'email pattern : username@domain.com' : ''}
+            autoFocus
           />
           <TextField
             variant="outlined"
@@ -116,13 +114,13 @@ function SignIn(props) {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             value={password}
             onChange={handlePassword}
             error={password.length > 0 && password.length < 6}
             helperText={password.length > 0 && password.length < 6 ? 'password must be atleast 6 characters long' : ''}
             autoComplete="current-password"
           />
+          {/* <Link to='/todo-app' className='link'> */}
           <Button
             type="submit"
             fullWidth
@@ -131,7 +129,8 @@ function SignIn(props) {
             className={classes.submit}
           >
             Sign In
-        </Button>
+            </Button>
+            {/* </Link> */}
         <Grid  container justify="flex-end">
             <Grid item>
               <Link to='/sign-up' className = 'link'>
