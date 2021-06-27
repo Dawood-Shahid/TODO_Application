@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -8,12 +8,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import {
-    useDispatch
+  useDispatch,
+  useSelector
 } from 'react-redux';
 
 import '../Authentication.css'
 import {
-  loginUser
+  loginUser,
+  getUserData
 } from '../../../redux/Authentication/AuthenticationActions'
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +40,16 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn(props) {
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLogedIn);
+
+  useEffect(() => {
+    // console.log(`from sign in effect`)
+    dispatch(getUserData());
+    if (isLoggedIn) {
+      props.history.replace('/todo-app');
+    }
+  }, [isLoggedIn, props.history]);
 
     const validate = (pattern, field) => {
       let regex = new RegExp(pattern);

@@ -11,7 +11,6 @@ export default class Authentication extends Component {
         return (
             <div>
                 <Switch>
-                    <PrivateRoute path='/todo-app' component={TodoApp} />
                     <Route path='/sign-up' component={SignUp} />
                     <Route path='/' component={SignIn} />
                 </Switch>

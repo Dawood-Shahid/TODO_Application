@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -8,11 +8,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import {
-    useDispatch
+  useDispatch,
+  useSelector
 } from 'react-redux';
 
 import '../Authentication.css'
-import { registeredUser } from '../../../redux/Authentication/AuthenticationActions';
+import {
+  registeredNewUser,
+  getUserData
+} from '../../../redux/Authentication/AuthenticationActions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,8 +41,17 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp(props) {
 
-  // const user = useSelector(state => state.user)
+
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLogedIn);
+
+  useEffect(() => {
+    // console.log(`from sign in effect`)
+    dispatch(getUserData());
+    if (isLoggedIn) {
+      props.history.replace('/todo-app');
+    }
+  }, [isLoggedIn, props.history]);
 
    const [firstNameValid, setFirstNameValid] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -96,7 +109,7 @@ function SignUp(props) {
           password,
         }; 
 
-        dispatch(registeredUser(userData));
+        dispatch(registeredNewUser(userData));
   
         setFirstName('');
         setLastName('');

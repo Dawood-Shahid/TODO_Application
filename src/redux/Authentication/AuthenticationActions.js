@@ -6,13 +6,26 @@ import {
 } from './AuthenticationType';
 import config from '../../DBConfig/Config';
 
-const registeredUser = (data) => {
+const userSignIn = () => {
+    return {
+        type: USER_SIGN_IN,
+    };
+};
+
+const setUserData = (payload) => {
+    return {
+        type: USER_SIGN_UP,
+        payload
+    };
+};
+
+const registeredNewUser = (data) => {
     return (dispatch) => {
         config.auth().createUserWithEmailAndPassword(data.email, data.password)
             .then((res) => {
-                // // uncommt for emil verification 
-                // res.user.sendEmailVerification()
-                    // .then(function () {
+                // uncommt for emil verification 
+                res.user.sendEmailVerification()
+                    .then(function () {
                         let userID = res.user.uid;
                         let user = {
                             key: userID,
@@ -22,63 +35,67 @@ const registeredUser = (data) => {
                         };
                         alert('A verification email has been sent to your account.');
                         config.database().ref(`/TODO-App/registered-users/${user.key}`).set(user)
-                        .then(() => {
-                                dispatch(userSignUp(user))
+                            .then(() => {
+                                // dispatch(setUserData(user));
                             })
                             .catch(err =>
                                 console.log(err)
                             );
-                    // })
-                    // .catch(function (error) {
-                    //     console.log(error);
-                    // });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             })
             .catch((err) => {
                 console.log(err);
             });
-    }
-    
+    };
+
 };
 
-const getCurrentUser = () => {
-    let userData;
-    
+const getUserData = () => {
+    return dispatch => {
+        let userData;
+        config.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                if (user.emailVerified) {
+                    config.database().ref(`TODO-App/registered-users/${user.uid}`).once('value')
+                        .then(data => {
+                            userData = { ...data.val() };
+                            dispatch(userSignIn());
+                            dispatch(setUserData(userData));
+                        })
+                        .catch(error => {
+                            console.log('catch block');
+                            console.log(error);
+                        });
+                }
+            }
+        });
+    };
 };
 
 const loginUser = (formData) => {
-    // console.log(formData);
     return dispatch => {
         config.auth().signInWithEmailAndPassword(formData.email, formData.password)
             .then(res => {
                 if (res.user.emailVerified) {
-                // getUserData();
+                    dispatch(userSignIn());
+                    dispatch(getUserData());
                 } else {
-                    alert('email not verified')
+                    alert('email not verified');
                 }
             })
             .catch(err => {
                 console.log(err);
             });
-    }
-};
-
-const userSignIn = (payload) => {
-    // userLogin(payload)
-
-    return {
-        type: USER_SIGN_IN,
     };
 };
 
-const userSignUp = (payload) => {
-    // setUserData(payload);
-    return {
-        type: USER_SIGN_UP,
-        payload
-    };
-};
+
 
 export {
-    registeredUser,
+    registeredNewUser,
     loginUser,
-}
+    getUserData
+};
