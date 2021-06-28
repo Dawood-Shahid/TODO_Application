@@ -16,18 +16,14 @@ import '../Authentication.css'
 import {
   registeredNewUser,
   getUserData
-} from '../../../redux/Authentication/AuthenticationActions';
+} from '../../../redux/authentication/AuthenticationActions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(15),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -128,7 +124,6 @@ function SignUp(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
           Sign Up

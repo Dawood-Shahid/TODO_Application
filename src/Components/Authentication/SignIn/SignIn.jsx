@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -16,18 +15,14 @@ import '../Authentication.css'
 import {
   loginUser,
   getUserData
-} from '../../../redux/Authentication/AuthenticationActions'
+} from '../../../redux/authentication/AuthenticationActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(15),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -44,7 +39,6 @@ function SignIn(props) {
   const isLoggedIn = useSelector(state => state.auth.isLogedIn);
 
   useEffect(() => {
-    // console.log(`from sign in effect`)
     dispatch(getUserData());
     if (isLoggedIn) {
       props.history.replace('/todo-app');
@@ -95,7 +89,6 @@ function SignIn(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
           Sign In

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import PrivateRoute from '../../route/PrivateRoute';
-import TodoApp from '../TodoApp/TodoApp';
-import SignIn from './SignIn/SignIn';
-import SignUp from './SignUp/SignUp';
+import SignIn from './signIn/SignIn';
+import SignUp from './signUp/SignUp';
+import AppBar from '../TodoApp/appBar/ApplicationBar';
 
 export default class Authentication extends Component {
     render() {
         return (
             <div>
+                <AppBar />
                 <Switch>
                     <Route path='/sign-up' component={SignUp} />
                     <Route path='/' component={SignIn} />

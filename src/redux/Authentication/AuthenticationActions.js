@@ -2,13 +2,20 @@
 
 import {
     USER_SIGN_IN,
-    USER_SIGN_UP
+    USER_SIGN_UP,
+    USER_SIGN_OUT
 } from './AuthenticationType';
 import config from '../../DBConfig/Config';
 
 const userSignIn = () => {
     return {
         type: USER_SIGN_IN,
+    };
+};
+
+const userSignOut = () => {
+    return {
+        type: USER_SIGN_OUT,
     };
 };
 
@@ -92,10 +99,22 @@ const loginUser = (formData) => {
     };
 };
 
+const logoutUser = () => {
+    return dispatch => {
+        config.auth().signOut()
+            .then(() => {
+                dispatch(userSignOut());
+            }).catch((err) => {
+                console.log(err)
+            });
+    };
+};
+
 
 
 export {
     registeredNewUser,
     loginUser,
-    getUserData
+    getUserData,
+    logoutUser
 };
