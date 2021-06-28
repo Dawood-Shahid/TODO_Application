@@ -16,28 +16,37 @@ const getTodos = () => {
     return dispatch => {
         const userData = config.auth().currentUser;
         config.database().ref(`/TODO-App/registered-users/${userData.uid}/todos`).once('value', function (data) {
-            console.log(data.val());
+            // console.log(data.val());
             dispatch(setTodoItems(data.val()));
         });
     };
 };
 
+const addTodo = (todo) => {
+    return {
+        type: ADD_TODO_ITEM,
+        payload: todo
+    }
+};
+
 const addTodoItem = (userData, todoList, todoData) => {
     return dispatch => {
         let todoKey = config.database().ref(`${userData.key}`).push().key;
+        let todo = {
+            ...todoData,
+            key: todoKey
+        }
         let userTodo = {
             ...userData,
-            todos: [...todoList, { ...todoData, key: todoKey }]
+            todos: [...todoList, todo]
         };
         config.database().ref(`/TODO-App/registered-users/${userData.key}`).set(userTodo)
             .then(res => {
-                dispatch(getTodos())
+                dispatch(addTodo(todo));
             })
             .catch(err => {
                 console.log(err);
             });
-        // console.log(todoKey)
-        // console.log(userTodo);
     };
 };
 

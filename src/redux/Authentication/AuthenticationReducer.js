@@ -13,11 +13,9 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case USER_SIGN_IN:
-            {
-                return {
-                    ...state,
-                    isLogedIn: true
-                };
+            return {
+                ...state,
+                isLogedIn: true
             };
 
         case USER_SIGN_UP:
@@ -32,12 +30,10 @@ export default (state = initialState, action) => {
             };
 
         case USER_SIGN_OUT:
-            {
-                return {
-                    ...state,
-                    isLogedIn: false,
-                    user: {}
-                };
+            return {
+                ...state,
+                isLogedIn: false,
+                user: {}
             };
 
         default:

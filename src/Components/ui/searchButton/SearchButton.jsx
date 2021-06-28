@@ -14,8 +14,8 @@ function SearchButton() {
     },
     fab: {
       position: 'absolute',
-      bottom: theme.spacing(4),
-      right: theme.spacing(5),
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
     }
   }));
 
@@ -24,8 +24,9 @@ function SearchButton() {
   return (
     <div className={classes.root}>
         <Fab
-            color="action"
-            aria-label="add"
+            color="primary"
+        aria-label="filter"
+        size='small'
             className={classes.fab}
             // onClick={clicked}
         >

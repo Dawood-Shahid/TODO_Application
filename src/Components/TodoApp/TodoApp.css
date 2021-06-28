@@ -1,20 +1,11 @@
 .container {
-  /* margin: 0; */
-  /* justify-content: center; */
-  /* padding: 10px 10px 0 10px; */
-  margin:  0 auto;
+  margin: 0 auto;
   margin-top: 70px;
   padding: 20px;
-  height: 86vh;
-  overflow: auto;
-  width: 95%;
-  background-color: whitesmoke;
-  border: 1px solid #cccbcb;
-  border-radius: 5px;
-  /* background-color: cadetblue; */
-  /* position: fixed; */
-  /* display: grid;
-    grid-template-columns: repeat(4, minmax(auto, 1fr)); */
-  /* justify-items: space-between; */
-  /* fle */
+}
+
+@media (max-width: 500px) {
+  .container {
+    margin-top: 50px;
+  }
 }

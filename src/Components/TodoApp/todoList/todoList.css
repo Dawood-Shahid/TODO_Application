@@ -1,0 +1,14 @@
+.todoList {
+  margin-top: 15px;
+  height: 54vh;
+  background-color: whitesmoke;
+  padding: 15px 10px 0 10px;
+  border-radius: 5px;
+  border: 1px solid #d5d5d5;
+}
+
+@media (max-width: 500px) {
+  .todoList {
+    padding: 10px 5px 0 5px;
+  }
+}
