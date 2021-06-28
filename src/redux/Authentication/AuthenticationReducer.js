@@ -23,7 +23,12 @@ export default (state = initialState, action) => {
         case USER_SIGN_UP:
             return {
                 ...state,
-                user: action.payload
+                user: {
+                    firstName: action.payload.firstName,
+                    lastName: action.payload.lastName,
+                    email: action.payload.email,
+                    key: action.payload.key
+                }
             };
 
         case USER_SIGN_OUT:

@@ -2,10 +2,22 @@ import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
+import {
+    useSelector,
+    useDispatch
+} from 'react-redux'
 
 import './textArea.css'
+import {
+    addTodoItem
+} from '../../../redux/todo/todoAction'
 
 function TextArea() {
+
+    const userData = useSelector(state => state.auth.user);
+    const todoList = useSelector(state => state.todo.todos);
+    const dispatch = useDispatch();
+
     const [todo, setTodo] = useState('');
     const [validateTodo, setValidateTodo] = useState(false);
 
@@ -61,7 +73,8 @@ const validate = (pattern, field) => {
             isComplete: false
         }
 
-        console.log(todoData);
+        dispatch(addTodoItem(userData, todoList, todoData));
+        
         setTodo('');
     }
 
