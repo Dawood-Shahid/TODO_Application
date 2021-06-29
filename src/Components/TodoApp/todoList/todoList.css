@@ -1,14 +1,34 @@
-.todoList {
+.todoListSection {
   margin-top: 15px;
-  height: 54vh;
+  height: 56vh;
   background-color: whitesmoke;
-  padding: 15px 10px 0 10px;
+  padding: 10px 10px 0 10px;
   border-radius: 5px;
   border: 1px solid #d5d5d5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+.todoList {
+  width: 100%;
+  height: 86%;
+  /* overflow: auto; */
+}
+
+.myPagination{
+  /* border: 1px solid black; */
+  /* background-color: red; */
+  margin: 5px auto;
 }
 
 @media (max-width: 500px) {
+  .todoListSection {
+    padding: 10px 0px 0 0px;
+    }
   .todoList {
-    padding: 10px 5px 0 5px;
+    padding: 5px 5px 0 5px;
   }
 }
