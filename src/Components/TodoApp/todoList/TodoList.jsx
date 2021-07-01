@@ -7,21 +7,23 @@ import {
 
 import './todoList.css'
 import TodoItem from './todoItem/TodoItem'
+import {
+    getTodos
+} from '../../../redux/todo/todoAction'
 
 function TodoList() {
     
     let currentWindow = window.innerWidth, pageCount, selectedTodos;
     
-    const todos = useSelector(state => state.todo.todos);
-    // const [todoArr, setTodoArr] = useState(todos)
+    const stateTodos = useSelector(state => state.todo.todos);
+    const dispatch = useDispatch()
+        
+    const [todos, setTodos] = useState(stateTodos);
     const [page, setPage] = useState(1);
     const [initialPoint, setInitialPoint] = useState(0);
     const [finalPoint, setFinalPoint] = useState(currentWindow > 500 ? 4 : 3 );
-    
-    useEffect(() => {
-        alert('effect run')
-            selectedTodos = todos.slice(initialPoint, finalPoint);
-    }, [todos]);
+
+    selectedTodos = todos.slice(initialPoint, finalPoint);
     
     if (currentWindow < 500) {
         pageCount = Math.ceil(todos.length / 3);
@@ -29,8 +31,7 @@ function TodoList() {
         pageCount = Math.ceil(todos.length / 4);
     }        
     
-    // console.log(todos)
-    console.log(selectedTodos)
+    
     const handlePageChange = (e, value) => {
         setPage(value);
         
@@ -54,13 +55,11 @@ function TodoList() {
             }
         }
     }
-
     
     return (
         <div className='todoListSection'>
             <div className='todoList'>
                 {
-                    selectedTodos !== 'undefined' &&        
                     selectedTodos.map(todo => <TodoItem todoData={todo} key={todo.key} />)
                 }
             </div>

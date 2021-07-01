@@ -19,29 +19,30 @@ import {
 } from '../../../../redux/todo/todoAction'
 
 function TodoItem({todoData}) {
-    // console.log(todoData)
     const userData = useSelector(state => state.auth.user)
-    // const editModalFlag = useSelector(state => state.todo.editFlag)
     const dispatch = useDispatch()
+    
+    useEffect(() => {
+        setTodo(todoData)
+    },[todoData])
 
-    const [todoText, setTodoText] = useState(todoData.todoText)
+    const [todo, setTodo] = useState(todoData)
 
-    const [checked, setChecked] = useState(todoData.isComplete)
+    const [checked, setChecked] = useState(todo.isComplete)
 
     const handleChecked = () => {
         setChecked(!checked);
         
-        let todo = {
-            ...todoData,
+        let myTodo = {
+            ...todo,
             isComplete: !checked
         }
         
-        dispatch(updateTodoItem(userData, todo))
+        dispatch(updateTodoItem(userData, myTodo))
     }
 
     const editFlagHandler = () => {
-        dispatch(setEditTodoItem(todoData));
-        // setEditFlag(true);
+        dispatch(setEditTodoItem(todo));
     }
 
     return (
@@ -62,13 +63,13 @@ function TodoItem({todoData}) {
                         variant='h5'
                         className={checked? 'taskDoneText' : ''}
                     >
-                        {todoText}
+                        {todo.todoText}
                     </Typography>
                     <Typography
                         variant='body2'
                         className={checked? 'taskDone' : ''}
                     >
-                        {todoData.createdOn}
+                        {todo.createdOn}
                     </Typography>
                 </div>
                 <div className='buttonSection'>

@@ -45,7 +45,6 @@ export default (state = initialState, action) => {
             break;
         
         case UPDATE_TODO_ITEM:
-            // console.log(state.todos.map((todo) => todo.key === action.payload.key ? action.payload : todo))
             return {
                 ...state,
                 todos: [...state.todos.map((todo) => todo.key === action.payload.key ? action.payload : todo)]
