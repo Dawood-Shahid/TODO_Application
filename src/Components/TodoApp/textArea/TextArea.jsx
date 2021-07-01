@@ -50,7 +50,6 @@ const validate = (pattern, field) => {
           let current = (now.getDate());
           if (current < 10) {
             return "0" + current.toString();
-            // return current.toString();
           } else return current.toString();
         };
     

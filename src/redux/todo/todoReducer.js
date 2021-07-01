@@ -10,6 +10,7 @@ import {
     RESET_DELETE_FALG,
     SET_FILTER_FALG,
     RESET_FILTER_FALG,
+    DELETE_TODO_ITEM,
 } from './todoType';
 
 const initialState = {
@@ -41,6 +42,13 @@ export default (state = initialState, action) => {
                 ...state,
                 editFlag: true,
                 editTodo: action.payload
+            };
+            break;
+
+        case DELETE_TODO_ITEM:
+            return {
+                ...state,
+                todos: state.todos.filter(todo => todo.key !== action.payload)
             };
             break;
         

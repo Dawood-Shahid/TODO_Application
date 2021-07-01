@@ -15,10 +15,9 @@ function TodoList() {
     
     let currentWindow = window.innerWidth, pageCount, selectedTodos;
     
-    const stateTodos = useSelector(state => state.todo.todos);
+    const todos = useSelector(state => state.todo.todos);
     const dispatch = useDispatch()
         
-    const [todos, setTodos] = useState(stateTodos);
     const [page, setPage] = useState(1);
     const [initialPoint, setInitialPoint] = useState(0);
     const [finalPoint, setFinalPoint] = useState(currentWindow > 500 ? 4 : 3 );

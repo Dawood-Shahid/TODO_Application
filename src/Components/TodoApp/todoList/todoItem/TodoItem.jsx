@@ -15,18 +15,21 @@ import {
 import './todoItem.css'
 import {
     updateTodoItem,
-    setEditTodoItem
+    setEditTodoItem,
+    deleteTodo
 } from '../../../../redux/todo/todoAction'
 
 function TodoItem({todoData}) {
+    // console.log(todoData)
     const userData = useSelector(state => state.auth.user)
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         setTodo(todoData)
     },[todoData])
-
+    
     const [todo, setTodo] = useState(todoData)
+    // console.log(todo)
 
     const [checked, setChecked] = useState(todo.isComplete)
 
@@ -39,6 +42,10 @@ function TodoItem({todoData}) {
         }
         
         dispatch(updateTodoItem(userData, myTodo))
+    }
+
+    const removeTodoHandler = (data, userData) => {
+        dispatch(deleteTodo(data, userData));
     }
 
     const editFlagHandler = () => {
@@ -86,7 +93,7 @@ function TodoItem({todoData}) {
                         aria-label='remove'
                         color='secondary'
                         size='small'
-                        // onClick={removeTaskHandler}
+                        onClick={() => removeTodoHandler(todo, userData)}
                     >
                         <RemoveIcon />
                     </IconButton>

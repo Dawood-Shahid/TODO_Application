@@ -8,6 +8,7 @@ import {
     RESET_DELETE_FALG,
     SET_FILTER_FALG,
     RESET_FILTER_FALG,
+    DELETE_TODO_ITEM
 } from './todoType';
 
 import config from '../../DBConfig/Config';
@@ -23,7 +24,7 @@ const getTodos = () => {
     return dispatch => {
         const userData = config.auth().currentUser;
         config.database().ref(`/TODO-App/registered-users/${userData.uid}/todos`).once('value', function (data) {
-            let todosObj = data.val()
+            let todosObj = data.val();
             let todosArr = [];
 
             if (todosObj) {
@@ -41,6 +42,25 @@ const addTodo = (todo) => {
     return {
         type: ADD_TODO_ITEM,
         payload: todo
+    };
+};
+
+const removeDeletedTodo = (key) => {
+    return {
+        type: DELETE_TODO_ITEM,
+        payload: key
+    };
+}
+
+const deleteTodo = (todo, userData) => {
+    return dispatch => {
+        config.database().ref(`/TODO-App/registered-users/${userData.key}/todos/${todo.key}`).remove()
+            .then(res => {
+                dispatch(removeDeletedTodo(todo.key))
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 };
 
@@ -50,7 +70,7 @@ const addTodoItem = (userData, todoData) => {
         let todo = {
             ...todoData,
             key: todoKey
-        }
+        };
         config.database().ref(`/TODO-App/registered-users/${userData.key}/todos/${todoKey}`).set(todo)
             .then(res => {
                 dispatch(addTodo(todo));
@@ -65,22 +85,22 @@ const setEditTodoItem = (todoItem) => {
     return {
         type: SET_EDIT_FALG,
         payload: todoItem
-    }
-}
+    };
+};
 
 const resetEditTodoItem = () => {
     return {
         type: RESET_EDIT_FALG,
-    }
-}
+    };
+};
 
 const updatedTodo = (updatedTodo) => {
     // console.log(updatedTodo)
     return {
         type: UPDATE_TODO_ITEM,
         payload: updatedTodo
-    }
-}
+    };
+};
 
 const updateTodoItem = (userData, todoData) => {
     return dispatch => {
@@ -92,37 +112,38 @@ const updateTodoItem = (userData, todoData) => {
             .catch(err => {
                 console.log(err);
             });
-    }
-}
+    };
+};
 
 const setDeleteFlag = () => {
     return {
         type: SET_DELETE_FALG
-    }
-}
+    };
+};
 
 const resetDeleteFlag = () => {
     return {
         type: RESET_DELETE_FALG
-    }
-}
+    };
+};
 
 const setFilterFlag = () => {
     return {
         type: SET_FILTER_FALG
-    }
-}
+    };
+};
 
 const resetFilterFlag = () => {
     return {
         type: RESET_FILTER_FALG
-    }
-}
+    };
+};
 
 export {
     getTodos,
     addTodoItem,
     updateTodoItem,
+    deleteTodo,
     setEditTodoItem,
     resetEditTodoItem,
     setDeleteFlag,
