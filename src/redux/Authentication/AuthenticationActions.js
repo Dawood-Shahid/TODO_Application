@@ -94,7 +94,8 @@ const loginUser = (formData) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
+                alert('There is no user record corresponding to this identifier.');
             });
     };
 };

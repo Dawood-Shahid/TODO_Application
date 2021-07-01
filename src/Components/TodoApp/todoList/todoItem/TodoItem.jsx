@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     Paper,
     Typography,
@@ -13,9 +13,37 @@ import {
 } from 'react-redux'
 
 import './todoItem.css'
+import {
+    updateTodoItem,
+    setEditTodoItem
+} from '../../../../redux/todo/todoAction'
 
 function TodoItem({todoData}) {
     // console.log(todoData)
+    const userData = useSelector(state => state.auth.user)
+    // const editModalFlag = useSelector(state => state.todo.editFlag)
+    const dispatch = useDispatch()
+
+    const [todoText, setTodoText] = useState(todoData.todoText)
+
+    const [checked, setChecked] = useState(todoData.isComplete)
+
+    const handleChecked = () => {
+        setChecked(!checked);
+        
+        let todo = {
+            ...todoData,
+            isComplete: !checked
+        }
+        
+        dispatch(updateTodoItem(userData, todo))
+    }
+
+    const editFlagHandler = () => {
+        dispatch(setEditTodoItem(todoData));
+        // setEditFlag(true);
+    }
+
     return (
         <Paper
             className='todoItem'
@@ -23,20 +51,22 @@ function TodoItem({todoData}) {
             <div className='todoBody' >
                 <div className='checkbox' >
                     <Checkbox
-                        checked={todoData.isComplete}
-                        // onChange={(e) => { handleChange(e); }}
-                        inputProps={{ 'aria-label': 'primary-checkbox' }}
+                        checked={checked}
+                        onChange={handleChecked}
+                        color='primary'
                         size='small'
                     />
                 </div>
                 <div className='dataBody'>
                     <Typography
                         variant='h5'
+                        className={checked? 'taskDoneText' : ''}
                     >
-                        {todoData.todoText}
+                        {todoText}
                     </Typography>
                     <Typography
                         variant='body2'
+                        className={checked? 'taskDone' : ''}
                     >
                         {todoData.createdOn}
                     </Typography>
@@ -46,8 +76,8 @@ function TodoItem({todoData}) {
                         aria-label='edit'
                         color='primary'
                         size='small'
-                        // onClick={editFlagHandler}
-                        // disabled={checked}
+                        onClick={editFlagHandler}
+                        disabled={checked}
                     >
                         <EditIcon />
                     </IconButton>
@@ -61,7 +91,7 @@ function TodoItem({todoData}) {
                     </IconButton>
                 </div>
             </div>
-        </Paper>
+            </Paper>
     )
 }
 

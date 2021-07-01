@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function SearchButton() {
+function FilterButton({clicked}) {
     const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -25,10 +25,10 @@ function SearchButton() {
     <div className={classes.root}>
         <Fab
             color="primary"
-        aria-label="filter"
-        size='small'
+            aria-label="filter"
+            size='small'
             className={classes.fab}
-            // onClick={clicked}
+            onClick={clicked}
         >
         <FilterListIcon />
         </Fab>
@@ -36,4 +36,4 @@ function SearchButton() {
   );
 }
 
-export default SearchButton
+export default FilterButton

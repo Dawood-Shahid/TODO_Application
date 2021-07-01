@@ -37,6 +37,15 @@
   justify-content: space-evenly;
 }
 
+.taskDoneText {
+  text-decoration: line-through;
+  color: rgb(116, 114, 114);
+}
+
+.taskDone {
+  color: rgb(116, 114, 114);
+}
+
 @media (max-width: 500px) {
   .todoItem {
     padding: 5px;

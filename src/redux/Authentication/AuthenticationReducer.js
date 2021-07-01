@@ -17,6 +17,7 @@ export default (state = initialState, action) => {
                 ...state,
                 isLogedIn: true
             };
+            break;
 
         case USER_SIGN_UP:
             return {
@@ -28,6 +29,7 @@ export default (state = initialState, action) => {
                     key: action.payload.key
                 }
             };
+            break;
 
         case USER_SIGN_OUT:
             return {
@@ -35,7 +37,8 @@ export default (state = initialState, action) => {
                 isLogedIn: false,
                 user: {}
             };
-
+            break;
+        
         default:
             return {
                 ...state

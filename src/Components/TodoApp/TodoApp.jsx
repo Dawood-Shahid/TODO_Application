@@ -7,16 +7,26 @@ import {
 import './TodoApp.css'
 import AppBar from './appBar/ApplicationBar'
 import TextArea from './textArea/TextArea'
-import SearchButton from '../ui/searchButton/SearchButton'
+import FilterButton from '../ui/filterButton/FilterButton'
+import DeleteButton from '../ui/deleteButton/DeleteButton';
+// import ModalWindow from '../ui/modal/ModalWindow'
 import TodoList from './todoList/TodoList'
 import {
     getTodos,
+    setDeleteFlag,
+    setFilterFlag
 } from '../../redux/todo/todoAction'
+import EditTodo from './todoList/todoItem/editTodo/EditTodo';
+import DeleteAndFilterTodo from './todoList/todoItem/deleteAndFilterTodo/DeleteAndFilterTodo';
 
 
 function TodoApp() {
 
     const todos = useSelector(state => state.todo.todos)
+    const editModalFlag = useSelector(state => state.todo.editFlag)
+    const deleteModalFlag = useSelector(state => state.todo.deleteFlag)
+    const filterModalFlag = useSelector(state => state.todo.filterFlag)
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,11 +43,24 @@ function TodoApp() {
                         <TodoList /> :
                         'Loading'
                 }
-                {/* <Link to={`${path}/project`}> */}
-                    <SearchButton 
-                    // clicked={generateProjectKey} 
-                    />
-                {/* </Link > */}
+                <FilterButton 
+                    clicked={() => dispatch(setFilterFlag())}  
+                />
+                <DeleteButton 
+                    clicked={() => dispatch(setDeleteFlag())} 
+                />
+                {
+                    editModalFlag &&
+                    <EditTodo />                    
+                }
+                {
+                    deleteModalFlag &&
+                    <DeleteAndFilterTodo />
+                }
+                {
+                    filterModalFlag &&
+                    <DeleteAndFilterTodo />
+                }
             </div>
         </>
     )

@@ -1,6 +1,13 @@
 import {
     ADD_TODO_ITEM,
-    SET_TODO_ITEMS
+    SET_TODO_ITEMS,
+    UPDATE_TODO_ITEM,
+    SET_EDIT_FALG,
+    RESET_EDIT_FALG,
+    SET_DELETE_FALG,
+    RESET_DELETE_FALG,
+    SET_FILTER_FALG,
+    RESET_FILTER_FALG,
 } from './todoType';
 
 import config from '../../DBConfig/Config';
@@ -16,8 +23,16 @@ const getTodos = () => {
     return dispatch => {
         const userData = config.auth().currentUser;
         config.database().ref(`/TODO-App/registered-users/${userData.uid}/todos`).once('value', function (data) {
-            // console.log(data.val());
-            dispatch(setTodoItems(data.val()));
+            let todosObj = data.val()
+            let todosArr = [];
+
+            if (todosObj) {
+                let todoKeys = Object.keys(todosObj);
+                todoKeys.map(todo => {
+                    todosArr.push(todosObj[todo]);
+                });
+                dispatch(setTodoItems(todosArr));
+            }
         });
     };
 };
@@ -36,11 +51,7 @@ const addTodoItem = (userData, todoList, todoData) => {
             ...todoData,
             key: todoKey
         }
-        let userTodo = {
-            ...userData,
-            todos: [...todoList, todo]
-        };
-        config.database().ref(`/TODO-App/registered-users/${userData.key}`).set(userTodo)
+        config.database().ref(`/TODO-App/registered-users/${userData.key}/todos/${todoKey}`).set(todo)
             .then(res => {
                 dispatch(addTodo(todo));
             })
@@ -50,7 +61,64 @@ const addTodoItem = (userData, todoList, todoData) => {
     };
 };
 
+const setEditTodoItem = (todoItem) => {
+    return {
+        type: SET_EDIT_FALG,
+        payload: todoItem
+    }
+}
+
+const resetEditTodoItem = () => {
+    return {
+        type: RESET_EDIT_FALG,
+    }
+}
+
+const updateTodoItem = (userData, todoData) => {
+    return dispatch => {
+        console.log(todoData);
+        config.database().ref(`/TODO-App/registered-users/${userData.key}/todos/${todoData.key}`).set(todoData)
+            .then(res => {
+                // dispatch(addTodo(todo));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+}
+
+const setDeleteFlag = () => {
+    return {
+        type: SET_DELETE_FALG
+    }
+}
+
+const resetDeleteFlag = () => {
+    return {
+        type: RESET_DELETE_FALG
+    }
+}
+
+const setFilterFlag = () => {
+    return {
+        type: SET_FILTER_FALG
+    }
+}
+
+const resetFilterFlag = () => {
+    return {
+        type: RESET_FILTER_FALG
+    }
+}
+
 export {
     getTodos,
-    addTodoItem
+    addTodoItem,
+    updateTodoItem,
+    setEditTodoItem,
+    resetEditTodoItem,
+    setDeleteFlag,
+    resetDeleteFlag,
+    setFilterFlag,
+    resetFilterFlag
 };

@@ -81,9 +81,7 @@ const validate = (pattern, field) => {
     return (
         <form
             autoComplete='off'
-            // noValidate
             onSubmit={addTodoHAndler}
-            // method='post'
         >
         <Paper
             elevation={3}
