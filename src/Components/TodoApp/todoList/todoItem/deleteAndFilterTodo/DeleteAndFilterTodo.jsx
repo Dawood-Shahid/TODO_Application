@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import {
     Typography,
     ButtonGroup
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import ModalWindow from '../../../../ui/modal/ModalWindow'
 import {
@@ -17,12 +21,27 @@ import {
     resetDeleteFlag
 } from '../../../../../redux/todo/todoAction'
 
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 200,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 function DeleteAndFilterTodo() {
 
     const filter = useSelector(state => state.todo.filterFlag);
-    // const search = useSelector(state => state.todo.filterFlag);
     const dispatch = useDispatch();
-    // const [text, setText] = useState(todo.todoText);
+
+    const classes = useStyles();
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
 
     return (
         <ModalWindow
@@ -35,7 +54,7 @@ function DeleteAndFilterTodo() {
             >
                 {filter ? 'Filter Your Todos' : 'Delete Your Todos'}
             </Typography>
-            {/* <form
+            <form
                 autoComplete='off'
             // onSubmit={addTodoHAndler}
             >
@@ -43,41 +62,56 @@ function DeleteAndFilterTodo() {
                     elevation={3}
                     className='textArea-container'
                 >
-                    <TextField
-                        id="outlined-basic"
-                        size='small'    
-                        label='Update your Todos....'
-                        variant="outlined"
-                        margin='normal'    
-                        value={text}
-                        fullWidth='true'
-                        // onChange={(e) => todoHandler(e)}
-                        // error={todo !== '' & !validateTodo}
-                        // helperText={todo !== '' & !validateTodo ? 'Special characters are not allowed' : ''}
-                        
-                    />
-                    <ButtonGroup variant='contained' fullWidth={true}>                        
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            size='small'
-                            // disabled={todo !== '' & !validateTodo || todo === ''}
+                    <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-outlined-label">Please select</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={age}
+                        onChange={handleChange}
+                        label="Please select"
                         >
-                            Update
-                        </Button>
+                        <MenuItem value="">
+                            <em>Please select</em>
+                        </MenuItem>
+                        <MenuItem value={10}>All</MenuItem>
+                        <MenuItem value={20}>Complete</MenuItem>
+                        <MenuItem value={30}>Incomplete</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <ButtonGroup variant='contained' fullWidth={true}>                        
+                        {
+                            filter ? 
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                size='small'
+                                // disabled={todo !== '' & !validateTodo || todo === ''}
+                            >
+                                Filter
+                            </Button> :
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="secondary"
+                                size='small'
+                                // disabled={todo !== '' & !validateTodo || todo === ''}
+                            >
+                                Delete
+                            </Button> 
+                        }
                         <Button
-                            onClick={() => dispatch(resetEditTodoItem())}
+                            onClick={() =>  filter ? dispatch(resetFilterFlag()) : dispatch(resetDeleteFlag())}
                             variant="contained"
-                            color="secondary"
+                            color={filter ? 'secondary' : 'primary' }
                             size='small'
-                            // disabled={todo !== '' & !validateTodo || todo === ''}
                         >
                             Cancle
                         </Button>
                     </ButtonGroup>
                 </Paper>
-            </form> */}
+            </form>
             </div>
         </ModalWindow>
     )

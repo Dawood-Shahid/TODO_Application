@@ -14,8 +14,8 @@ import {
 
 function TextArea() {
 
+    let currentWindow = window.innerWidth;
     const userData = useSelector(state => state.auth.user);
-    const todoList = useSelector(state => state.todo.todos);
     const dispatch = useDispatch();
 
     const [todo, setTodo] = useState('');
@@ -73,7 +73,7 @@ const validate = (pattern, field) => {
             isComplete: false
         }
 
-        dispatch(addTodoItem(userData, todoList, todoData));
+        dispatch(addTodoItem(userData, todoData));
         
         setTodo('');
     }
@@ -96,13 +96,13 @@ const validate = (pattern, field) => {
                 onChange={(e) => todoHandler(e)}
                 error={todo !== '' & !validateTodo}
                 helperText={todo !== '' & !validateTodo ? 'Special characters are not allowed' : ''}
-                
+                size={currentWindow < 500 ? 'small' : 'large'}                
             />
             <Button
                 type="submit"
                 variant="contained"
                 color="primary"
-                size='large'
+                size={currentWindow < 500 ? 'small' : 'large'}
                 disabled={todo !== '' & !validateTodo || todo === ''}
             >
                 Add Todo

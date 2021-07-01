@@ -11,28 +11,26 @@ import TodoItem from './todoItem/TodoItem'
 function TodoList() {
     
     let currentWindow = window.innerWidth, pageCount, selectedTodos;
+    
     const todos = useSelector(state => state.todo.todos);
+    // const [todoArr, setTodoArr] = useState(todos)
     const [page, setPage] = useState(1);
     const [initialPoint, setInitialPoint] = useState(0);
     const [finalPoint, setFinalPoint] = useState(currentWindow > 500 ? 4 : 3 );
-
-    // useEffect(() => {
-    //     if (currentWindow < 500) {
-    //         // console.log('less then 500 apply this')
-    //     } else {
-    //         setInitialPoint(0)
-    //         setFinalPoint(4)
-    //     }        
-    // }, [page]);
-
+    
+    useEffect(() => {
+        alert('effect run')
+            selectedTodos = todos.slice(initialPoint, finalPoint);
+    }, [todos]);
+    
     if (currentWindow < 500) {
         pageCount = Math.ceil(todos.length / 3);
     } else {
         pageCount = Math.ceil(todos.length / 4);
     }        
     
-    selectedTodos = todos.slice(initialPoint, finalPoint);
-    
+    // console.log(todos)
+    console.log(selectedTodos)
     const handlePageChange = (e, value) => {
         setPage(value);
         
@@ -61,9 +59,10 @@ function TodoList() {
     return (
         <div className='todoListSection'>
             <div className='todoList'>
-            {
-                selectedTodos.map(todo => <TodoItem todoData={todo} key={todo.key} />)
-            }
+                {
+                    selectedTodos !== 'undefined' &&        
+                    selectedTodos.map(todo => <TodoItem todoData={todo} key={todo.key} />)
+                }
             </div>
             <Pagination
                 count={pageCount}
@@ -72,6 +71,7 @@ function TodoList() {
                 shape="rounded"
                 size='small'
                 className='myPagination'
+                
             />
         </div>
 

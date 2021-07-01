@@ -43,6 +43,14 @@ export default (state = initialState, action) => {
                 editTodo: action.payload
             };
             break;
+        
+        case UPDATE_TODO_ITEM:
+            // console.log(state.todos.map((todo) => todo.key === action.payload.key ? action.payload : todo))
+            return {
+                ...state,
+                todos: [...state.todos.map((todo) => todo.key === action.payload.key ? action.payload : todo)]
+            };
+            break;
 
         case RESET_EDIT_FALG:
             return {

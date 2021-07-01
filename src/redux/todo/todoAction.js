@@ -44,7 +44,7 @@ const addTodo = (todo) => {
     }
 };
 
-const addTodoItem = (userData, todoList, todoData) => {
+const addTodoItem = (userData, todoData) => {
     return dispatch => {
         let todoKey = config.database().ref(`${userData.key}`).push().key;
         let todo = {
@@ -74,12 +74,20 @@ const resetEditTodoItem = () => {
     }
 }
 
+const updatedTodo = (updatedTodo) => {
+    // console.log(updatedTodo)
+    return {
+        type: UPDATE_TODO_ITEM,
+        payload: updatedTodo
+    }
+}
+
 const updateTodoItem = (userData, todoData) => {
     return dispatch => {
-        console.log(todoData);
+        // console.log(todoData);
         config.database().ref(`/TODO-App/registered-users/${userData.key}/todos/${todoData.key}`).set(todoData)
             .then(res => {
-                // dispatch(addTodo(todo));
+                dispatch(updatedTodo(todoData));
             })
             .catch(err => {
                 console.log(err);

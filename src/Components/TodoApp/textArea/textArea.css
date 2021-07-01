@@ -7,3 +7,10 @@
     padding: 10px;
     height: 140px;
 }
+
+@media (max-width: 500px) {
+    .textArea-container {
+        display: flex;
+        height: 100px;
+    }    
+}

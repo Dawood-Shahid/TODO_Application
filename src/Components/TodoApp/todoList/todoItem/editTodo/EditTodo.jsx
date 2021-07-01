@@ -13,14 +13,46 @@ import {
     useDispatch
 } from 'react-redux';
 import {
-    resetEditTodoItem
+    resetEditTodoItem,
+    updateTodoItem
 } from '../../../../../redux/todo/todoAction'
 
 function EditTodo() {
 
     const todo = useSelector(state => state.todo.editTodo);
+    const userData = useSelector(state => state.auth.user)
     const dispatch = useDispatch();
+
     const [text, setText] = useState(todo.todoText);
+     const [validateTodo, setValidateTodo] = useState(true);
+
+    const todoHandler = (e) => {
+        setText(e.target.value);
+        setValidateTodo(validate(/^[a-zA-Z0-9\ ]*$/gm ,e.target.value));
+    }
+
+const validate = (pattern, field) => {
+        let regex = new RegExp(pattern);
+        if (regex.test(field)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
+    const addTodoHAndler = (e) => {
+        e.preventDefault();
+        
+        let updatedTodo = {
+            ...todo,
+            todoText: text
+        }
+
+        dispatch(updateTodoItem(userData, updatedTodo))
+        dispatch(resetEditTodoItem())
+
+        setText('');
+    }
 
     return (
         <ModalWindow
@@ -35,7 +67,7 @@ function EditTodo() {
             </Typography>
             <form
                 autoComplete='off'
-            // onSubmit={addTodoHAndler}
+            onSubmit={addTodoHAndler}
             >
                 <Paper
                     elevation={3}
@@ -49,9 +81,9 @@ function EditTodo() {
                         margin='normal'    
                         value={text}
                         fullWidth='true'
-                        // onChange={(e) => todoHandler(e)}
-                        // error={todo !== '' & !validateTodo}
-                        // helperText={todo !== '' & !validateTodo ? 'Special characters are not allowed' : ''}
+                        onChange={(e) => todoHandler(e)}
+                        error={text !== '' & !validateTodo}
+                        helperText={text !== '' & !validateTodo ? 'Special characters are not allowed' : ''}
                         
                     />
                     <ButtonGroup variant='contained' fullWidth={true}>                        
