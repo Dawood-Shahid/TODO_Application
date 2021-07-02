@@ -43,6 +43,7 @@ function SignUp(props) {
   useEffect(() => {
     // console.log(`from sign in effect`)
     dispatch(getUserData());
+    console.log(props)
     if (isLoggedIn) {
       props.history.replace('/todo-app');
     }
