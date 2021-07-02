@@ -15,7 +15,8 @@ function TodoList() {
     
     let currentWindow = window.innerWidth, pageCount, selectedTodos;
     
-    const todos = useSelector(state => state.todo.todos);
+    // const todos = useSelector(state => state.todo.todos);
+    const todos = useSelector(state => state.todo.filteredTodos.length > 0 ? state.todo.filteredTodos : state.todo.todos );
     const dispatch = useDispatch()
         
     const [page, setPage] = useState(1);

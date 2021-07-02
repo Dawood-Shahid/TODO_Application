@@ -5,8 +5,10 @@ import {
     SET_EDIT_FALG,
     RESET_EDIT_FALG,
     SET_DELETE_FALG,
+    SET_DELETE_FALG_VALUE,
     RESET_DELETE_FALG,
     SET_FILTER_FALG,
+    SET_FILTER_FALG_VALUE,
     RESET_FILTER_FALG,
     DELETE_TODO_ITEM
 } from './todoType';
@@ -121,6 +123,41 @@ const setDeleteFlag = () => {
     };
 };
 
+const deleteMultipleTodo = (value) => {
+    return {
+        type: SET_DELETE_FALG_VALUE,
+        payload: value
+    };
+}
+
+const setDeleteFlagValue = (value, todos, user) => {    
+    return dispatch => {
+        let deleteTodosArr = todos.filter(todo => value === 'all' ? true : todo.isComplete === value)
+        deleteTodosArr.map(todo => {
+            if (value === 'all') {
+                config.database().ref(`/TODO-App/registered-users/${user.key}/todos`).remove()
+                    .then(res => {
+                        dispatch(deleteMultipleTodo(value));
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                } else {
+                config.database().ref(`/TODO-App/registered-users/${user.key}/todos/${todo.key}`).remove()
+                    .then(res => {
+                        dispatch(deleteMultipleTodo(value));
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        })
+
+
+    }
+    
+};
+
 const resetDeleteFlag = () => {
     return {
         type: RESET_DELETE_FALG
@@ -130,6 +167,13 @@ const resetDeleteFlag = () => {
 const setFilterFlag = () => {
     return {
         type: SET_FILTER_FALG
+    };
+};
+
+const setFilterFlagValue = (value) => {
+    return {
+        type: SET_FILTER_FALG_VALUE,
+        payload: value
     };
 };
 
@@ -147,7 +191,9 @@ export {
     setEditTodoItem,
     resetEditTodoItem,
     setDeleteFlag,
+    setDeleteFlagValue,
     resetDeleteFlag,
     setFilterFlag,
+    setFilterFlagValue,
     resetFilterFlag
 };

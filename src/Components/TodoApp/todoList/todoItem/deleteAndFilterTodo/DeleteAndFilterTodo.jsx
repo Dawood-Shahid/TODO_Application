@@ -17,7 +17,9 @@ import {
     useDispatch
 } from 'react-redux';
 import {
+    setFilterFlagValue,
     resetFilterFlag,
+    setDeleteFlagValue,
     resetDeleteFlag
 } from '../../../../../redux/todo/todoAction'
 
@@ -34,14 +36,25 @@ const useStyles = makeStyles((theme) => ({
 function DeleteAndFilterTodo() {
 
     const filter = useSelector(state => state.todo.filterFlag);
+    const todos = useSelector(state => state.todo.todos);
+    const userData = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
     const classes = useStyles();
-    const [age, setAge] = React.useState('');
+    const [selector, setSelector] = useState('');
 
-    const handleChange = (event) => {
-        setAge(event.target.value);
+    const handleChange = e => {
+        setSelector(e.target.value);
     };
+    
+    const deleteAndFilterTodoHAndler = (e) => {
+        e.preventDefault();
+        if (selector !== '') {
+            filter ? dispatch(setFilterFlagValue(selector)) : dispatch(setDeleteFlagValue(selector, todos, userData))
+        }
+
+        filter ? dispatch(resetFilterFlag()) : dispatch(resetDeleteFlag())
+    }
 
     return (
         <ModalWindow
@@ -56,7 +69,7 @@ function DeleteAndFilterTodo() {
             </Typography>
             <form
                 autoComplete='off'
-            // onSubmit={addTodoHAndler}
+            onSubmit={deleteAndFilterTodoHAndler}
             >
                 <Paper
                     elevation={3}
@@ -65,18 +78,18 @@ function DeleteAndFilterTodo() {
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label">Please select</InputLabel>
                         <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={age}
-                        onChange={handleChange}
-                        label="Please select"
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={selector}
+                            onChange={handleChange}
+                            label="Please select"
                         >
                         <MenuItem value="">
                             <em>Please select</em>
                         </MenuItem>
-                        <MenuItem value={10}>All</MenuItem>
-                        <MenuItem value={20}>Complete</MenuItem>
-                        <MenuItem value={30}>Incomplete</MenuItem>
+                        <MenuItem value={'all'}>All</MenuItem>
+                        <MenuItem value={true}>Complete</MenuItem>
+                        <MenuItem value={false}>Incomplete</MenuItem>
                         </Select>
                     </FormControl>
                     <ButtonGroup variant='contained' fullWidth={true}>                        
@@ -87,7 +100,6 @@ function DeleteAndFilterTodo() {
                                 variant="contained"
                                 color="primary"
                                 size='small'
-                                // disabled={todo !== '' & !validateTodo || todo === ''}
                             >
                                 Filter
                             </Button> :
@@ -96,7 +108,6 @@ function DeleteAndFilterTodo() {
                                 variant="contained"
                                 color="secondary"
                                 size='small'
-                                // disabled={todo !== '' & !validateTodo || todo === ''}
                             >
                                 Delete
                             </Button> 

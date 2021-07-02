@@ -5,6 +5,10 @@
   padding-bottom: 5px;
 }
 
+.loadin {
+  margin-top: 100px !important;
+}
+
 @media (max-width: 500px) {
   .container {
     margin-top: 50px;

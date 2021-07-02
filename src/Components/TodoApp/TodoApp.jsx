@@ -3,6 +3,7 @@ import {
     useDispatch,
     useSelector
 } from 'react-redux'
+import { Typography } from '@material-ui/core';
 
 import './TodoApp.css'
 import AppBar from './appBar/ApplicationBar'
@@ -41,7 +42,14 @@ function TodoApp() {
                 {
                     todos.length > 0 ?
                         <TodoList /> :
-                        'Loading'
+                        <Typography
+                            variant='h4'
+                            gutterBottom='true'
+                            className='loadin'
+                        >
+                            Add todos...
+                        </Typography>
+                        
                 }
                 <FilterButton 
                     clicked={() => dispatch(setFilterFlag())}  

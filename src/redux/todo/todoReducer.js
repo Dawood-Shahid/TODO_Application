@@ -11,10 +11,13 @@ import {
     SET_FILTER_FALG,
     RESET_FILTER_FALG,
     DELETE_TODO_ITEM,
+    SET_FILTER_FALG_VALUE,
+    SET_DELETE_FALG_VALUE,
 } from './todoType';
 
 const initialState = {
     todos: [],
+    filteredTodos: [],
     editFlag: false,
     editTodo: {},
     filterFlag: false,
@@ -74,6 +77,13 @@ export default (state = initialState, action) => {
             };
             break;
 
+        case SET_DELETE_FALG_VALUE:
+            return {
+                ...state,
+                todos: action.payload === 'all' ? [] : state.todos.filter(todo => todo.isComplete !== action.payload)
+            };
+            break;
+
         case RESET_DELETE_FALG:
             return {
                 ...state,
@@ -85,6 +95,13 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 filterFlag: true
+            };
+            break;
+
+        case SET_FILTER_FALG_VALUE:
+            return {
+                ...state,
+                filteredTodos: state.todos.filter(todo => action.payload === 'all' ? true : todo.isComplete === action.payload)
             };
             break;
 
