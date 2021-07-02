@@ -21,6 +21,7 @@ import {
 
 function TodoItem({todoData}) {
     // console.log(todoData)
+    let currentWindow = window.innerWidth;
     const userData = useSelector(state => state.auth.user)
     const dispatch = useDispatch()
 
@@ -67,7 +68,7 @@ function TodoItem({todoData}) {
                 </div>
                 <div className='dataBody'>
                     <Typography
-                        variant='h5'
+                        variant={currentWindow > 500 ? 'h5' : 'body1'}
                         className={checked? 'taskDoneText' : ''}
                     >
                         {todo.todoText}

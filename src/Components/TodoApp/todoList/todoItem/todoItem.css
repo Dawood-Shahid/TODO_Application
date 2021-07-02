@@ -54,4 +54,9 @@
     width: 50px;
     flex-direction: column;
   }
+  .dataBody {
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
 }
